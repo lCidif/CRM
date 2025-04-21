@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tareas del Cliente</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 30px;
+        }
+
+        .tareas-container {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        a.button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            margin: 5px;
+            display: inline-block;
+        }
+
+        a.button:hover {
+            background-color: #45a049;
+        }
+
+        .tarea {
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .pendiente {
+            background-color: yellow;
+        }
+
+        .cerrado {
+            background-color: green;
+            color: white;
+        }
+
+        .tarea:hover {
+            background-color: #f0f0f0;
+        }
+
+        .tarea p {
+            margin: 5px 0;
+        }
+
+        .link-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Tareas de {{ cliente.nombre }}</h1>
+
+    <div class="tareas-container">
+        <a href="{{ url_for('add_tarea', cliente_id=cliente.id) }}" class="button">Agregar Nueva Tarea</a>
+        <br><br>
+
+        {% if tareas %}
+            {% for tarea in tareas %}
+                <div class="tarea {% if tarea.estado == 'Pendiente' %}pendiente{% elif tarea.estado == 'Cerrado' %}cerrado{% endif %}">
+                    <p><strong>Descripción:</strong> {{ tarea.descripcion }}</p>
+                    <p><strong>Fecha de Vencimiento:</strong> {{ tarea.fecha_vencimiento }}</p>
+                    <p><strong>Estado:</strong> {{ tarea.estado }}</p>
+                    <p><strong>Valor:</strong> {{ tarea.valor }}</p>
+
+                    <a href="{{ url_for('editar_tarea', tarea_id=tarea.id) }}" class="button">Editar Tarea</a>
+                </div>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <p>No hay tareas para este cliente.</p>
+        {% endif %}
+    </div>
+
+    <div class="link-container">
+        <a href="{{ url_for('index') }}" class="button">Volver al Inicio</a>
+    </div>
+
+</body>
+</html>
